@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  redis:
+    image: redislabs/redismod
+    container_name: redis
+    networks:
+      - backend
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+
+  flask:
+    build: .
+    container_name: flask
+    networks:
+      - backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    container_name: redisinsight
+    networks:
+      - backend
+    ports:
+      - '8001:8001'
+
+networks:
+  backend:
+
+volumes:
+  redis_data:

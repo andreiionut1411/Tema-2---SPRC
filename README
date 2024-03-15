@@ -1,0 +1,25 @@
+/* Ionescu Andrei Ionut - 344C3 */
+
+				Tema 2
+
+	For this homework I chose to use Flask to write the API
+and Redis as a database in which to store the results.
+	Because redis is like a big hashtable, I made the convention
+that in the database we would store the id in an encoded fashion.
+For example, for the country with id == 1, in the database we would
+have the key country_id_1. When returning the results, we would
+parse the id and get the actual id. This way, we can have both
+a country and a city with the same id as in an SQL database for
+example.  To keep the unique constraints, I kept sets that were formed
+from the parts that formed the unique key, separated by "_".
+Another thing I needed to get creative was the assigning of the ids
+because redis doesn't have autoincrement. I would have an id for country,
+one for cities and one for temperature, and I would increment it until
+I find a free id. We always increment, so we need to check if the id is
+taken because we can set the id when updating the entry. For the timestamp
+I used the internal clock of the PC to get the timestamp when the request
+was made.
+	The rest of the implementation was pretty straighforward and I just
+followed the requirements and common sense in order to decide in which
+cases I needed which error codes, in order to take into consideration
+all the edge cases.
